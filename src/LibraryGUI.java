@@ -4,14 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LibraryGUI extends JFrame {
-    private Library library;
-    private JTextField titleField;
-    private JTextArea displayArea;
+    private final Library library;
+    private final JTextField titleField;
+    private final JTextArea displayArea;
 
     public LibraryGUI() {
         library = new Library();
         setTitle("Library Management System");
-        setSize(400, 300);
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -55,16 +55,12 @@ public class LibraryGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String title = titleField.getText();
-            Book book = new Book(title, "Unknown"); // Simplified
-            library.returnBook(book);
-            displayArea.append("Returned: " + book.getTitle() + "\n");
+            try {
+                Book book = library.returnBook(title);
+                displayArea.append("Returned: " + book.getTitle() + "\n");
+            } catch (BookNotAvailableException ex) {
+                displayArea.append(ex.getMessage() + "\n");
+            }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LibraryGUI gui = new LibraryGUI();
-            gui.setVisible(true);
-        });
     }
 }

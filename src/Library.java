@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
-    private List<Book> books;
+    private final List<Book> books;;
 
     public Library() {
         books = new ArrayList<>();
@@ -25,7 +25,13 @@ public class Library {
         throw new BookNotAvailableException("Book not available: " + title);
     }
 
-    public void returnBook(Book book) {
-        book.setAvailable(true);
+    public Book returnBook(String title) throws BookNotAvailableException {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title) && !book.isAvailable()) {
+                book.setAvailable(true);
+                return book;
+            }
+        }
+        throw new BookNotAvailableException("Book not borrowed: " + title);
     }
 }
